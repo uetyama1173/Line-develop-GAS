@@ -1,15 +1,3 @@
-  let land
-  let detail
-  let imageurl
-  let detaillink
-  let land2
-  let detail2
-  let imageurl2
-  let detaillink2
-  let land3
-  let detail3
-  let imageurl3
-  let detaillink3
 
 function main() {
 
@@ -26,12 +14,7 @@ function main() {
   numbersnum = sheet_data.getRange(lastdata - 1, 4).getValue();
   colorsnum = sheet_data.getRange(lastdata, 4).getValue();
 
-
-  placekanko = myFunction(agesnum, numbersnum, colorsnum)
-
-  console.log(placekanko)
-
-  jikko(placekanko)
+  jikko(myFunction(agesnum, numbersnum, colorsnum))
 
 }
 
@@ -44,39 +27,41 @@ function jikko(placekanko) {
       "template": {
         "type": "carousel",
         "columns": [
+
+          //  return [land,detail,imageurl,detaillink,land2,detail2,imageurl2,detaillink2,land3,detail3,imageurl3,detaillink3]
           {
-            "thumbnailImageUrl": imageurl,
-            "title": land,
-            "text": detail,
+            "thumbnailImageUrl": placekanko[2],
+            "title": placekanko[0],
+            "text": placekanko[1],
             "actions": [
               {
                 "type": "uri",
                 "label": "詳細",
-                "uri": detaillink
+                "uri": placekanko[3]
               }
             ]
           },
           {
-            "thumbnailImageUrl": imageurl2,
-            "title": land2,
-            "text": detail2,
+            "thumbnailImageUrl": placekanko[6],
+            "title": placekanko[4],
+            "text": placekanko[5],
             "actions": [
               {
                 "type": "uri",
                 "label": "詳細",
-                "uri": detaillink2
+                "uri": placekanko[7]
               }
             ]
           },
           {
-            "thumbnailImageUrl": imageurl3,
-            "title": land3,
-            "text": detail3,
+            "thumbnailImageUrl": placekanko[10],
+            "title": placekanko[8],
+            "text": placekanko[9],
             "actions": [
               {
                 "type": "uri",
                 "label": "詳細",
-                "uri": detaillink3
+                "uri": placekanko[11]
               }
             ]
           }
@@ -153,8 +138,6 @@ function myFunction(agesnum, numbersnum, colorsnum) {
   let imageurl3
   let detaillink3
 
-  console.log(max2[1])
-
   for (let i = 2; i < place.length + 2; i++) {
     if (max[1] == sheet_detail.getRange(`A${i}`).getValue()) {
       land = sheet_detail.getRange(`B${i}`).getValue()
@@ -174,8 +157,8 @@ function myFunction(agesnum, numbersnum, colorsnum) {
     }
   }
 
-  resultkanko = [land,detail,imageurl,detaillink,land2,imageurl2,detaillink2,land3,detail3,imageurl3,detaillink3]
-  return(resultkanko)
+  return [land, detail, imageurl, detaillink, land2, detail2, imageurl2, detaillink2, land3, detail3, imageurl3, detaillink3]
+
 
 
 
