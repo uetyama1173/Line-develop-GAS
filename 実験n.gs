@@ -38,6 +38,7 @@ let count
    if(i>3){
      count = 10;
      console.log(count)
+     console.log(hello)
    }
 
    console.log(count);
