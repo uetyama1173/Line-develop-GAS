@@ -62,10 +62,6 @@ function reply(data) {
       colorsnum = sheet_data.getRange(lastdata, 4).getValue();
 
       placekanko = myFunction(agesnum, numbersnum, colorsnum) //cos類似度
-      land = placekanko[0]
-      detail = placekanko[1]
-      imageurl = placekanko[2]
-      detaillink = placekanko[3]
 
       nextMode = "ans"
     }
@@ -73,14 +69,13 @@ function reply(data) {
 
 
   // メッセージAPI送信
-  sendMessage(replyToken, nextMode, land, detail, imageurl, detaillink);
+  sendMessage(replyToken, nextMode, placekanko);
   //,land,detail,imageurl,detaillink
 
 }
 
-//let waoo =  [land,detail,imageurl,detaillink]
 // LINE messaging apiにJSON形式でデータをPOST
-function sendMessage(replyToken, nextMode, land, detail, imageurl, detaillink) {
+function sendMessage(replyToken, nextMode, placekanko) {
 
 
   let ageQuestion = [
@@ -91,7 +86,7 @@ function sendMessage(replyToken, nextMode, land, detail, imageurl, detaillink) {
         "type": "bubble",
         "hero": {
           "type": "image",
-          "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
+          "url": "https://uetyama1173.github.io/Line-develop-GAS/img/age2.jpg",
           "size": "full",
           "aspectRatio": "20:13",
           "aspectMode": "cover",
@@ -192,7 +187,7 @@ function sendMessage(replyToken, nextMode, land, detail, imageurl, detaillink) {
         "type": "bubble",
         "hero": {
           "type": "image",
-          "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
+          "url": "https://uetyama1173.github.io/Line-develop-GAS/img/who.jpg",
           "size": "full",
           "aspectRatio": "20:13",
           "aspectMode": "cover",
@@ -293,7 +288,7 @@ function sendMessage(replyToken, nextMode, land, detail, imageurl, detaillink) {
         "type": "bubble",
         "hero": {
           "type": "image",
-          "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
+          "url": "https://uetyama1173.github.io/Line-develop-GAS/img/likecolor.jpg",
           "size": "full",
           "aspectRatio": "20:13",
           "aspectMode": "cover",
@@ -401,45 +396,49 @@ function sendMessage(replyToken, nextMode, land, detail, imageurl, detaillink) {
         "template": {
           "type": "carousel",
           "columns": [
+
+            //  return [land,detail,imageurl,detaillink,land2,detail2,imageurl2,detaillink2,land3,detail3,imageurl3,detaillink3]
             {
-              "thumbnailImageUrl": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
-              "title": "観光地1",
-              "text": "こんなスポットは〇〇で，〇〇な方におすすめです．",
+              "thumbnailImageUrl": placekanko[2],
+              "title": placekanko[0],
+              "text": placekanko[1],
               "actions": [
                 {
                   "type": "uri",
                   "label": "詳細",
-                  "uri": "https://liff.line.me/1657210827-WqYZj0Rx"
+                  "uri": placekanko[3]
                 }
               ]
             },
             {
-              "thumbnailImageUrl": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
-              "title": "観光地2",
-              "text": "こんなスポットは〇〇で，     〇〇な方におすすめです．",
+              "thumbnailImageUrl": placekanko[6],
+              "title": placekanko[4],
+              "text": placekanko[5],
               "actions": [
                 {
                   "type": "uri",
                   "label": "詳細",
-                  "uri": "https://liff.line.me/1657210827-WqYZj0Rx"
+                  "uri": placekanko[7]
                 }
               ]
             },
             {
-              "thumbnailImageUrl": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
-              "title": "観光地3",
-              "text": "こんなスポットは〇〇で，     〇〇な方におすすめです．",
+              "thumbnailImageUrl": placekanko[10],
+              "title": placekanko[8],
+              "text": placekanko[9],
               "actions": [
                 {
                   "type": "uri",
                   "label": "詳細",
-                  "uri": "https://liff.line.me/1657210827-WqYZj0Rx"
+                  "uri": placekanko[11]
                 }
               ]
             }
           ]
         }
       }
+
+
 
 
     ]

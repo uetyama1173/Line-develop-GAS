@@ -16,6 +16,7 @@ function main() {
 
   jikko(myFunction(agesnum, numbersnum, colorsnum))
 
+
 }
 
 function jikko(placekanko) {
