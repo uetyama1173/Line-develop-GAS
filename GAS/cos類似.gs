@@ -14,7 +14,7 @@ function main() {
   numbersnum = sheet_data.getRange(lastdata - 1, 4).getValue();
   colorsnum = sheet_data.getRange(lastdata, 4).getValue();
 
-  jikko(myFunction(agesnum, numbersnum, colorsnum))
+//   jikko(myFunction(agesnum, numbersnum, colorsnum))
 
 
 }
@@ -78,7 +78,7 @@ function jikko(placekanko) {
   };
 
   let testmodel = JSON.stringify(postData)
-  console.log(testmodel)
+
 
 }
 
@@ -86,21 +86,25 @@ function myFunction(agesnum, numbersnum, colorsnum) {
 
   let list = [];
   //データセット 観光地のベクトルを設定
+  // age howmany color
   const teradomari = [1, 2, 2]
   const kokueipark = [1, 3, 4]
-  const sauna = [2, 1, 3]
-  const museum = [3, 2, 1]
-  const settapark = [4, 2, 2]
+  const nagaoka_hanabikan = [2, 1, 3]
+  const yukyuyama_park = [3, 2, 1]
+  const settaya = [4, 2, 2]
+  const wahima_auto_camp = [1, 3, 2]
+
 
   //宣言 
   let SHEET_NAME_DETAIL = 'shousai'
   let sheet_detail = SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEET_NAME_DETAIL);
   let personality = [agesnum, numbersnum, colorsnum]
-  const place = [teradomari, kokueipark, sauna, museum, settapark]
-  const str_place = ["1", "2", "3", "4", "5"]
+  const place = [teradomari, kokueipark, nagaoka_hanabikan, yukyuyama_park, settaya, wahima_auto_camp]
+  const str_place = ["1", "2", "3", "4", "5", "6"]
 
   //agesnum numbers colors のノルム
   let personalitynolm = [(personality[0] ** 2 + personality[1] ** 2 + personality[2] ** 2) ** 0.5]
+
 
   for (let j = 0; j < place.length; j++) {
 
@@ -115,50 +119,106 @@ function myFunction(agesnum, numbersnum, colorsnum) {
     //cos類似度
     let bunshi = personality[0] * place[j][0] + personality[1] * place[j][1] + personality[2] * place[j][2]
     let ruijido = bunshi / (personalitynolm * placenolm)
-    list.push(ruijido)
+    list.push(ruijido, str_place[j])
+
     //  簡略化に繋がるかもしれない list.push([ruijido,str_place[j]])
   }
-  let spot = [[list[0], str_place[0]], [list[1], str_place[1]], [list[2], str_place[2]], [list[3], str_place[3]], [list[4], str_place[4]]]
 
-  //sort関数で昇順へ
-  spotshojun = spot.sort();
-  let max = spotshojun[spotshojun.length - 1];
-  let max2 = spotshojun[spotshojun.length - 2];
-  let max3 = spotshojun[spotshojun.length - 3];
+  //配列をn個に分割できる関数
+  function dividelistIntoPieces(list, n) {
+    var listList = [];
+    var idx = 0;
+    while (idx < list.length) {
+      listList.push(list.splice(idx, idx + n));
+    }
+    return listList;
+  }
+
+  //配列を2個指定: ex [[1,2],[2,3]・・・]
+  let listsprit = dividelistIntoPieces(list, 2);
+
+  //sort関数で昇順へ ※デフォルト状態で動いている
+  listshojun = listsprit.sort();
+
+
+
+
+  let max = listshojun[listshojun.length - 1];
+
+  let max2 = listshojun[listshojun.length - 2];
+  let max3 = listshojun[listshojun.length - 3];
+
+
 
   let land
   let detail
   let imageurl
   let detaillink
+  let outline
+  let eigyojikan
+  let closedday
+  let officiallink
   let land2
   let detail2
   let imageurl2
   let detaillink2
+  let outline2
+  let eigyojikan2
+  let closedday2
+  let officiallink2
   let land3
   let detail3
   let imageurl3
   let detaillink3
-
-  for (let i = 2; i < place.length + 2; i++) {
+  let outline3
+  let eigyojikan3
+  let closedday3
+  let officiallink3
+let spots = []
+  for (let i = 2; i < place.length + 2; i++) { 
+    let spot = {}
     if (max[1] == sheet_detail.getRange(`A${i}`).getValue()) {
-      land = sheet_detail.getRange(`B${i}`).getValue()
-      detail = sheet_detail.getRange(`C${i}`).getValue()
-      imageurl = sheet_detail.getRange(`D${i}`).getValue()
-      detaillink = sheet_detail.getRange(`E${i}`).getValue()
+      spot.id = sheet_detail.getRange(`A${i}`).getValue() 
+      spot.land = sheet_detail.getRange(`B${i}`).getValue()
+      spot.detail = sheet_detail.getRange(`C${i}`).getValue()
+      spot.imageurl = sheet_detail.getRange(`D${i}`).getValue()
+      spot.detaillink = sheet_detail.getRange(`E${i}`).getValue()
+      spot.outline = sheet_detail.getRange(`F${i}`).getValue()
+      spot.eigyojikan = sheet_detail.getRange(`G${i}`).getValue()
+      spot.closedday = sheet_detail.getRange(`H${i}`).getValue()
+      spot.officiallink = sheet_detail.getRange(`I${i}`).getValue()
+      spots.push(spot)
     } else if (max2[1] == sheet_detail.getRange(`A${i}`).getValue()) {
-      land2 = sheet_detail.getRange(`B${i}`).getValue()
-      detail2 = sheet_detail.getRange(`C${i}`).getValue()
-      imageurl2 = sheet_detail.getRange(`D${i}`).getValue()
-      detaillink2 = sheet_detail.getRange(`E${i}`).getValue()
+      spot.id = sheet_detail.getRange(`A${i}`).getValue() 
+      spot.land = sheet_detail.getRange(`B${i}`).getValue()
+      spot.detail = sheet_detail.getRange(`C${i}`).getValue()
+      spot.imageurl = sheet_detail.getRange(`D${i}`).getValue()
+      spot.detaillink = sheet_detail.getRange(`E${i}`).getValue()
+      spot.outline = sheet_detail.getRange(`F${i}`).getValue()
+      spot.eigyojikan = sheet_detail.getRange(`G${i}`).getValue()
+      spot.closedday = sheet_detail.getRange(`H${i}`).getValue()
+      spot.officiallink = sheet_detail.getRange(`I${i}`).getValue()
+      spots.push(spot)
     } else if (max3[1] == sheet_detail.getRange(`A${i}`).getValue()) {
-      land3 = sheet_detail.getRange(`B${i}`).getValue()
-      detail3 = sheet_detail.getRange(`C${i}`).getValue()
-      imageurl3 = sheet_detail.getRange(`D${i}`).getValue()
-      detaillink3 = sheet_detail.getRange(`E${i}`).getValue()
+       spot.id = sheet_detail.getRange(`A${i}`).getValue() 
+      spot.land = sheet_detail.getRange(`B${i}`).getValue()
+      spot.detail = sheet_detail.getRange(`C${i}`).getValue()
+      spot.imageurl = sheet_detail.getRange(`D${i}`).getValue()
+      spot.detaillink = sheet_detail.getRange(`E${i}`).getValue()
+      spot.outline = sheet_detail.getRange(`F${i}`).getValue()
+      spot.eigyojikan = sheet_detail.getRange(`G${i}`).getValue()
+      spot.closedday = sheet_detail.getRange(`H${i}`).getValue()
+      spot.officiallink = sheet_detail.getRange(`I${i}`).getValue()
+      spots.push(spot)
     }
+    
   }
 
-  return [land, detail, imageurl, detaillink, land2, detail2, imageurl2, detaillink2, land3, detail3, imageurl3, detaillink3]
+console.log(spots)
+
+return spots
+  // return [land, detail, imageurl, detaillink, outline, eigyojikan, closedday, officiallink, land2, detail2, imageurl2, detaillink2, outline2, eigyojikan2, closedday2, officiallink2, land3, detail3, imageurl3, detaillink3, outline3, eigyojikan3, closedday3, officiallink3]
+
 
 
 

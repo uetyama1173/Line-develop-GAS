@@ -388,53 +388,27 @@ function sendMessage(replyToken, nextMode, placekanko) {
       "messages": colorQuestion
     };
   } else if (nextMode == "ans") {
-
+    let columnsData = placekanko.map((spot) => {
+      return {
+        "thumbnailImageUrl": spot.imageurl,
+        "title": spot.land,
+        "text": spot.detail,
+        "actions": [
+          {
+            "type": "uri",
+            "label": "詳細",
+            "uri": `https://script.google.com/macros/s/AKfycbygCuWMAfkYsz5hmmV8b_odP3O5ZEdmvOF3ZL3axqQwDb9qUjWk8N1D9WLrS-SZW-gfoA/exec?id=${spot.id}`
+          }
+        ]
+      }
+    })
     let kankochi = [
       {
         "type": "template",
         "altText": "this is a carousel template",
         "template": {
           "type": "carousel",
-          "columns": [
-
-            //  return [land,detail,imageurl,detaillink,land2,detail2,imageurl2,detaillink2,land3,detail3,imageurl3,detaillink3]
-            {
-              "thumbnailImageUrl": placekanko[2],
-              "title": placekanko[0],
-              "text": placekanko[1],
-              "actions": [
-                {
-                  "type": "uri",
-                  "label": "詳細",
-                  "uri": placekanko[3]
-                }
-              ]
-            },
-            {
-              "thumbnailImageUrl": placekanko[6],
-              "title": placekanko[4],
-              "text": placekanko[5],
-              "actions": [
-                {
-                  "type": "uri",
-                  "label": "詳細",
-                  "uri": placekanko[7]
-                }
-              ]
-            },
-            {
-              "thumbnailImageUrl": placekanko[10],
-              "title": placekanko[8],
-              "text": placekanko[9],
-              "actions": [
-                {
-                  "type": "uri",
-                  "label": "詳細",
-                  "uri": placekanko[11]
-                }
-              ]
-            }
-          ]
+          "columns": columnsData
         }
       }
 
@@ -462,6 +436,43 @@ function sendMessage(replyToken, nextMode, placekanko) {
     "payload": JSON.stringify(postData)
   };
   return UrlFetchApp.fetch(REPLY, options);
+}
+
+function test3() {
+  const placekanko = [{
+    imageurl: "imageurl",
+    land: "land",
+    detail: "detail",
+    id: 1
+  }, {
+    imageurl: "imageurl2",
+    land: "land2",
+    detail: "detail2",
+    id: 2
+  }, {
+    imageurl: "imageurl3",
+    land: "land3",
+    detail: "detail3",
+    id: 3
+  }]
+
+
+  let columns = placekanko.map((spot) => {
+    return {
+      "thumbnailImageUrl": spot.imageurl,
+      "title": spot.land,
+      "text": spot.detail,
+      "actions": [
+        {
+          "type": "uri",
+          "label": "詳細",
+          "uri": `https://script.google.com/macros/s/AKfycbygCuWMAfkYsz5hmmV8b_odP3O5ZEdmvOF3ZL3axqQwDb9qUjWk8N1D9WLrS-SZW-gfoA/exec?id=${spot.id}`
+        }
+      ]
+    }
+  })
+
+  console.log(columns)
 }
 
 
