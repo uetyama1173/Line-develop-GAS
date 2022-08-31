@@ -62,6 +62,8 @@ function reply(data) {
       colorsnum = sheet_data.getRange(lastdata, 4).getValue();
 
       placekanko = myFunction(agesnum, numbersnum, colorsnum) //cos類似度
+      //変数(placekanko)に return 値を格納している．
+
 
       nextMode = "ans"
     }
@@ -70,7 +72,6 @@ function reply(data) {
 
   // メッセージAPI送信
   sendMessage(replyToken, nextMode, placekanko);
-  //,land,detail,imageurl,detaillink
 
 }
 
@@ -388,16 +389,20 @@ function sendMessage(replyToken, nextMode, placekanko) {
       "messages": colorQuestion
     };
   } else if (nextMode == "ans") {
-    let columnsData = placekanko.map((spot) => {
+    let columnsData = placekanko.map((test) => {
+      //アロー関数：functionの代わりのようなもの(=>)
+      //観光地(return値)をmapで呼び出し，生成を行っている．
+      //.mapメソッド 与えられた関数を配列のすべての要素に対して呼び出し，その結果から新しい配列を生成
       return {
-        "thumbnailImageUrl": spot.imageurl,
-        "title": spot.land,
-        "text": spot.detail,
+        "thumbnailImageUrl": test.imageurl,
+        "title": test.land,
+        "text": test.detail,
         "actions": [
           {
             "type": "uri",
             "label": "詳細",
-            "uri": `https://script.google.com/macros/s/AKfycbygCuWMAfkYsz5hmmV8b_odP3O5ZEdmvOF3ZL3axqQwDb9qUjWk8N1D9WLrS-SZW-gfoA/exec?id=${spot.id}`
+            "uri": `https://script.google.com/macros/s/AKfycbwC2kwLvtS7b30nJG4b1ez6CcXlL-gHXIsSlmTw1BpvQr_1ya47frgTf3hW8un2E4T1DQ/exec?id=${test.id}`
+
           }
         ]
       }
@@ -439,7 +444,7 @@ function sendMessage(replyToken, nextMode, placekanko) {
 }
 
 function test3() {
-  const placekanko = [{
+  const testkanko = [{
     imageurl: "imageurl",
     land: "land",
     detail: "detail",
@@ -457,22 +462,28 @@ function test3() {
   }]
 
 
-  let columns = placekanko.map((spot) => {
+  //.mapは関数だから何かを指定しなければならない (何をmapするの？)
+  //新たな引数として(test)を指定 (testをマップするよ)
+  //返り値として{thum.. }のオブジェクトを返している． 
+
+  let columns = testkanko.map((test) => {
+    //3つのオブジェクトを全て呼び出している
+    //なぜ こんな書き方
     return {
-      "thumbnailImageUrl": spot.imageurl,
-      "title": spot.land,
-      "text": spot.detail,
+      "thumbnailImageUrl": test.imageurl,
+      "title": test.land,
+      "text": test.detail,
       "actions": [
         {
           "type": "uri",
           "label": "詳細",
-          "uri": `https://script.google.com/macros/s/AKfycbygCuWMAfkYsz5hmmV8b_odP3O5ZEdmvOF3ZL3axqQwDb9qUjWk8N1D9WLrS-SZW-gfoA/exec?id=${spot.id}`
+          "uri": `https://script.google.com/macros/s/AKfycbxQxSefY4B56n0Hiiy_yJGkY0IgLl_54ATAEIadGA7ucV1lbLq7wGLi37Ho6ZGDgAxapw/exec?id=${test.id}`
+
         }
       ]
     }
   })
 
-  console.log(columns)
 }
 
 

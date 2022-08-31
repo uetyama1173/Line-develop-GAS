@@ -1,4 +1,4 @@
-
+//Test
 function main() {
 
   var SHEET_NAME_DETAIL = 'shousai'
@@ -19,6 +19,7 @@ function main() {
 
 }
 
+//Test
 function jikko(placekanko) {
 
   let kankochi = [
@@ -82,6 +83,7 @@ function jikko(placekanko) {
 
 }
 
+//cos類似度計算
 function myFunction(agesnum, numbersnum, colorsnum) {
 
   let list = [];
@@ -175,8 +177,10 @@ function myFunction(agesnum, numbersnum, colorsnum) {
   let closedday3
   let officiallink3
 let spots = []
+//配列
   for (let i = 2; i < place.length + 2; i++) { 
     let spot = {}
+    //オブジェクト
     if (max[1] == sheet_detail.getRange(`A${i}`).getValue()) {
       spot.id = sheet_detail.getRange(`A${i}`).getValue() 
       spot.land = sheet_detail.getRange(`B${i}`).getValue()
@@ -200,7 +204,7 @@ let spots = []
       spot.officiallink = sheet_detail.getRange(`I${i}`).getValue()
       spots.push(spot)
     } else if (max3[1] == sheet_detail.getRange(`A${i}`).getValue()) {
-       spot.id = sheet_detail.getRange(`A${i}`).getValue() 
+      spot.id = sheet_detail.getRange(`A${i}`).getValue() 
       spot.land = sheet_detail.getRange(`B${i}`).getValue()
       spot.detail = sheet_detail.getRange(`C${i}`).getValue()
       spot.imageurl = sheet_detail.getRange(`D${i}`).getValue()
@@ -209,9 +213,8 @@ let spots = []
       spot.eigyojikan = sheet_detail.getRange(`G${i}`).getValue()
       spot.closedday = sheet_detail.getRange(`H${i}`).getValue()
       spot.officiallink = sheet_detail.getRange(`I${i}`).getValue()
-      spots.push(spot)
+      spots.push(spot)//オブジェクトでまとめたものを配列化している．
     }
-    
   }
 
 console.log(spots)

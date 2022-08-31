@@ -27,21 +27,21 @@ function doPost(e) {
  * doGet
  * GETリクエストのハンドリング
  */
-function doGet(e) {
-    // return ContentService.createTextOutput("SUCCESS");
+// function doGet(e) {
+//     // return ContentService.createTextOutput("SUCCESS");
 
-    // データの成形
+//     // データの成形
 
-  // console.log(responseList);
+//   // console.log(responseList);
 
-  // レスポンス
-  var response = {
+//   // レスポンス
+//   var response = {
     
-    meta: { status: 'success' }
-  };
-    return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(ContentService.MimeType.JSON);
+//     meta: { status: 'success' }
+//   };
+//     return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(ContentService.MimeType.JSON);
 
-}
+// }
 
 function replyTextMessage(replyToken, replyText) {  
   var postData = {
