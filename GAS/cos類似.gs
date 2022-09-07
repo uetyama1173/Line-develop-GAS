@@ -8,13 +8,14 @@ function main() {
 
   //最終行を取得
   lastdata = sheet_data.getLastRow();
+  console.log(lastdata)
   lastdataUser = sheet_data.getRange(lastdata, 2).getValue();
   //最新のユーザー情報を取得
   agesnum = sheet_data.getRange(lastdata - 2, 4).getValue();
   numbersnum = sheet_data.getRange(lastdata - 1, 4).getValue();
   colorsnum = sheet_data.getRange(lastdata, 4).getValue();
 
-//   jikko(myFunction(agesnum, numbersnum, colorsnum))
+  //   jikko(myFunction(agesnum, numbersnum, colorsnum))
 
 
 }
@@ -95,14 +96,41 @@ function myFunction(agesnum, numbersnum, colorsnum) {
   const yukyuyama_park = [3, 2, 1]
   const settaya = [4, 2, 2]
   const wahima_auto_camp = [1, 3, 2]
+  const ochimizu = [2, 3, 4]
+  const hanabikan = [2, 2, 3]
+  const yamamoto_kinenkan = [4, 1, 4]
+  const kinpushrine = [2, 2, 4]
+  //10
+  const oguni_park = [3, 2, 4]
+  const hakkkoku_mt = [2, 1, 4]
+  const oguni_seseragipark = [2, 3, 4]
+  const washima_eki = [3, 2, 2]
+  const hachisuba = [1, 2, 2]
+  const momijien = [2, 2, 1]
+  const hasegawatei = [1, 2, 3]
+  const hotarunosato = [2, 2, 3]
+  const tomogaoka_park = [2, 1, 4]
+  const masugatayama_park = [2, 2, 4]
+  //20
+  const gas_plant = [2, 2, 2]
+  const settaya_museum = [2, 3, 4]
+  const hujihashi = [2, 1, 3]
+  const izumosaki_eki = [2, 2, 2]
+  const teradomari_aquarium = [2, 3, 2]
+  const nakayamazuido = [1, 2, 2]
+  const koshiji_kokorate = [2, 2, 3]
+  const tanada = [2, 2, 4]
+  const eguchidango = [2, 2, 3]
+  const toxurumondo = [2, 2, 3]
+  //30
 
 
   //宣言 
   let SHEET_NAME_DETAIL = 'shousai'
   let sheet_detail = SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEET_NAME_DETAIL);
   let personality = [agesnum, numbersnum, colorsnum]
-  const place = [teradomari, kokueipark, nagaoka_hanabikan, yukyuyama_park, settaya, wahima_auto_camp]
-  const str_place = ["1", "2", "3", "4", "5", "6"]
+  const place = [teradomari, kokueipark, nagaoka_hanabikan, yukyuyama_park, settaya, wahima_auto_camp, ochimizu, hanabikan, yamamoto_kinenkan, kinpushrine, oguni_park, hakkkoku_mt, oguni_seseragipark, washima_eki, hachisuba, momijien, hasegawatei, hotarunosato, tomogaoka_park, masugatayama_park, gas_plant, settaya_museum, hujihashi, izumosaki_eki, teradomari_aquarium, nakayamazuido, koshiji_kokorate, tanada, eguchidango, toxurumondo]
+  const str_place = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"]
 
   //agesnum numbers colors のノルム
   let personalitynolm = [(personality[0] ** 2 + personality[1] ** 2 + personality[2] ** 2) ** 0.5]
@@ -176,13 +204,13 @@ function myFunction(agesnum, numbersnum, colorsnum) {
   let eigyojikan3
   let closedday3
   let officiallink3
-let spots = []
-//配列
-  for (let i = 2; i < place.length + 2; i++) { 
+  let spots = []
+  //配列
+  for (let i = 2; i < place.length + 2; i++) {
     let spot = {}
     //オブジェクト
     if (max[1] == sheet_detail.getRange(`A${i}`).getValue()) {
-      spot.id = sheet_detail.getRange(`A${i}`).getValue() 
+      spot.id = sheet_detail.getRange(`A${i}`).getValue()
       spot.land = sheet_detail.getRange(`B${i}`).getValue()
       spot.detail = sheet_detail.getRange(`C${i}`).getValue()
       spot.imageurl = sheet_detail.getRange(`D${i}`).getValue()
@@ -193,7 +221,7 @@ let spots = []
       spot.officiallink = sheet_detail.getRange(`I${i}`).getValue()
       spots.push(spot)
     } else if (max2[1] == sheet_detail.getRange(`A${i}`).getValue()) {
-      spot.id = sheet_detail.getRange(`A${i}`).getValue() 
+      spot.id = sheet_detail.getRange(`A${i}`).getValue()
       spot.land = sheet_detail.getRange(`B${i}`).getValue()
       spot.detail = sheet_detail.getRange(`C${i}`).getValue()
       spot.imageurl = sheet_detail.getRange(`D${i}`).getValue()
@@ -204,7 +232,7 @@ let spots = []
       spot.officiallink = sheet_detail.getRange(`I${i}`).getValue()
       spots.push(spot)
     } else if (max3[1] == sheet_detail.getRange(`A${i}`).getValue()) {
-      spot.id = sheet_detail.getRange(`A${i}`).getValue() 
+      spot.id = sheet_detail.getRange(`A${i}`).getValue()
       spot.land = sheet_detail.getRange(`B${i}`).getValue()
       spot.detail = sheet_detail.getRange(`C${i}`).getValue()
       spot.imageurl = sheet_detail.getRange(`D${i}`).getValue()
@@ -217,9 +245,9 @@ let spots = []
     }
   }
 
-console.log(spots)
+  console.log(spots)
 
-return spots
+  return spots
   // return [land, detail, imageurl, detaillink, outline, eigyojikan, closedday, officiallink, land2, detail2, imageurl2, detaillink2, outline2, eigyojikan2, closedday2, officiallink2, land3, detail3, imageurl3, detaillink3, outline3, eigyojikan3, closedday3, officiallink3]
 
 

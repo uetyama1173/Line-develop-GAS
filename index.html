@@ -3,6 +3,21 @@
 
 <head>
   <base target="_top">
+  <style type="text/css">
+    img {
+      width: 100%;
+      height: 28rem;
+      border: solid;
+      border-radius: 8px;
+
+
+    }
+
+    h2 {
+      border-bottom: solid 2px rgb(57, 190, 183);
+
+    }
+  </style>
 </head>
 
 <body>
@@ -17,13 +32,18 @@
   </div>
 
   <h2>基本情報</h2>
-  <?=  eigyojikan ?>
-  <?= closedday ?>
+  <p>営業時間：
+    <?=  eigyojikan ?>
+  </p>
+  <p>休館日：
+    <?= closedday ?>
+  </p>
 
   <h2>公式サイト</h2>
-  <?= officiallink ?>
+  <a href="<?= officiallink?>">
+    <?= officiallink?>
+  </a>
 
 </body>
 
 </html>
-

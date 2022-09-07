@@ -401,7 +401,7 @@ function sendMessage(replyToken, nextMode, placekanko) {
           {
             "type": "uri",
             "label": "詳細",
-            "uri": `https://script.google.com/macros/s/AKfycbwC2kwLvtS7b30nJG4b1ez6CcXlL-gHXIsSlmTw1BpvQr_1ya47frgTf3hW8un2E4T1DQ/exec?id=${test.id}`
+            "uri": `https://script.google.com/macros/s/AKfycbx6XfqZGNBsZrzAJEruftdiG8TjRKhAFCm80brbwmPW_nx8tioOeNe7j7lrKkJfnddqJw/exec?id=${test.id}`
 
           }
         ]
