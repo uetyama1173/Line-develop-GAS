@@ -90,38 +90,38 @@ function myFunction(agesnum, numbersnum, colorsnum) {
   let list = [];
   //データセット 観光地のベクトルを設定
   // age howmany color
-  const teradomari = [1, 2, 2]
+  const teradomari = [1, 2, 4]
   const kokueipark = [1, 3, 4]
-  const nagaoka_hanabikan = [2, 1, 3]
-  const yukyuyama_park = [3, 2, 1]
-  const settaya = [4, 2, 2]
-  const wahima_auto_camp = [1, 3, 2]
+  const nagaoka_hanabikan = [2, 1, 1]
+  const yukyuyama_park = [3, 2, 3]
+  const settaya = [4, 2, 3]
+  const wahima_auto_camp = [1, 3, 4]
   const ochimizu = [2, 3, 4]
-  const hanabikan = [2, 2, 3]
-  const yamamoto_kinenkan = [4, 1, 4]
-  const kinpushrine = [2, 2, 4]
+  const hanabikan = [2, 2, 1]
+  const yamamoto_kinenkan = [4, 1, 2]
+  const kinpushrine = [2, 2, 2]
   //10
-  const oguni_park = [3, 2, 4]
-  const hakkkoku_mt = [2, 1, 4]
+  const oguni_park = [3, 2, 3]
+  const hakkkoku_mt = [2, 1, 3]
   const oguni_seseragipark = [2, 3, 4]
-  const washima_eki = [3, 2, 2]
-  const hachisuba = [1, 2, 2]
-  const momijien = [2, 2, 1]
+  const washima_eki = [3, 2, 1]
+  const hachisuba = [1, 2, 3]
+  const momijien = [2, 2, 4]
   const hasegawatei = [1, 2, 3]
   const hotarunosato = [2, 2, 3]
   const tomogaoka_park = [2, 1, 4]
   const masugatayama_park = [2, 2, 4]
   //20
-  const gas_plant = [2, 2, 2]
-  const settaya_museum = [2, 3, 4]
-  const hujihashi = [2, 1, 3]
-  const izumosaki_eki = [2, 2, 2]
+  const gas_plant = [2, 2, 3]
+  const settaya_museum = [2, 3, 2]
+  const hujihashi = [2, 1, 2]
+  const izumosaki_eki = [2, 2, 4]
   const teradomari_aquarium = [2, 3, 2]
-  const nakayamazuido = [1, 2, 2]
-  const koshiji_kokorate = [2, 2, 3]
-  const tanada = [2, 2, 4]
-  const eguchidango = [2, 2, 3]
-  const toxurumondo = [2, 2, 3]
+  const nakayamazuido = [1, 2, 3]
+  const koshiji_kokorate = [2, 2, 1]
+  const tanada = [2, 2, 3]
+  const eguchidango = [2, 2, 1]
+  const toxurumondo = [2, 2, 1]
   //30
 
 
@@ -243,9 +243,11 @@ function myFunction(agesnum, numbersnum, colorsnum) {
       spot.officiallink = sheet_detail.getRange(`I${i}`).getValue()
       spots.push(spot)//オブジェクトでまとめたものを配列化している．
     }
+
   }
 
-  console.log(spots)
+console.log(spots)
+
 
   return spots
   // return [land, detail, imageurl, detaillink, outline, eigyojikan, closedday, officiallink, land2, detail2, imageurl2, detaillink2, outline2, eigyojikan2, closedday2, officiallink2, land3, detail3, imageurl3, detaillink3, outline3, eigyojikan3, closedday3, officiallink3]

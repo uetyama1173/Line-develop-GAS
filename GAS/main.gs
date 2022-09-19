@@ -203,7 +203,7 @@ function sendMessage(replyToken, nextMode, placekanko) {
           "contents": [
             {
               "type": "text",
-              "text": "何人で観光しますか？",
+              "text": "誰と観光へ行きますか？",
               "weight": "bold",
               "size": "xl",
               "margin": "none",
@@ -230,9 +230,9 @@ function sendMessage(replyToken, nextMode, placekanko) {
               "height": "sm",
               "action": {
                 "type": "postback",
-                "label": "1人",
+                "label": "一人旅",
                 "data": "solo",
-                "displayText": "1人"
+                "displayText": "一人旅"
               }
             },
             {
@@ -241,9 +241,9 @@ function sendMessage(replyToken, nextMode, placekanko) {
               "height": "sm",
               "action": {
                 "type": "postback",
-                "label": "2人",
+                "label": "夫婦・カップル",
                 "data": "duet",
-                "displayText": "2人"
+                "displayText": "夫婦・カップル"
               }
             },
             {
@@ -256,18 +256,18 @@ function sendMessage(replyToken, nextMode, placekanko) {
               "type": "button",
               "action": {
                 "type": "postback",
-                "label": "3~5人",
+                "label": "友達",
                 "data": "trio",
-                "displayText": "3~5人"
+                "displayText": "友達"
               }
             },
             {
               "type": "button",
               "action": {
                 "type": "postback",
-                "label": "5人以上",
+                "label": "団体(5人以上)",
                 "data": "quintet",
-                "displayText": "5人以上"
+                "displayText": "団体(5人以上)"
               }
             }
           ],
@@ -280,6 +280,9 @@ function sendMessage(replyToken, nextMode, placekanko) {
 
   ]
 
+
+  //データ変更
+  //外で遊びたい= 緑, グルメ・カフェ= 赤, 博物館・美術館 = 青 , 穴場へ行ってみたい=黄
   let colorQuestion = [
     {
       "type": "flex",
@@ -304,7 +307,7 @@ function sendMessage(replyToken, nextMode, placekanko) {
           "contents": [
             {
               "type": "text",
-              "text": "今日は何色の気分？",
+              "text": "どんな場所が良いですか？",
               "weight": "bold",
               "size": "xl"
             }
@@ -321,9 +324,9 @@ function sendMessage(replyToken, nextMode, placekanko) {
               "height": "sm",
               "action": {
                 "type": "postback",
-                "label": "赤",
+                "label": "グルメ・カフェ",
                 "data": "red",
-                "displayText": "赤"
+                "displayText": "グルメ・カフェ"
               }
             },
             {
@@ -332,9 +335,9 @@ function sendMessage(replyToken, nextMode, placekanko) {
               "height": "sm",
               "action": {
                 "type": "postback",
-                "label": "青",
+                "label": "博物館・美術館",
                 "data": "blue",
-                "displayText": "青"
+                "displayText": "博物館・美術館"
               }
             },
             {
@@ -347,18 +350,18 @@ function sendMessage(replyToken, nextMode, placekanko) {
               "type": "button",
               "action": {
                 "type": "postback",
-                "label": "黄",
+                "label": "穴場へ行ってみたい",
                 "data": "yellow",
-                "displayText": "黄"
+                "displayText": "穴場へ行ってみたい"
               }
             },
             {
               "type": "button",
               "action": {
                 "type": "postback",
-                "label": "緑",
+                "label": "外で遊びたい！",
                 "data": "green",
-                "displayText": "緑"
+                "displayText": "外で遊びたい"
               }
             }
           ],
@@ -401,7 +404,7 @@ function sendMessage(replyToken, nextMode, placekanko) {
           {
             "type": "uri",
             "label": "詳細",
-            "uri": `https://script.google.com/macros/s/AKfycbx6XfqZGNBsZrzAJEruftdiG8TjRKhAFCm80brbwmPW_nx8tioOeNe7j7lrKkJfnddqJw/exec?id=${test.id}`
+            "uri": `https://script.google.com/macros/s/AKfycbw_jQnSeziriTuwkuxztGtS6QYT3Gxbtptx4VeIbMRlsbfhqWMxvlKuyKkqc2wFUcxD0Q/exec?id=${test.id}`
 
           }
         ]
@@ -421,6 +424,8 @@ function sendMessage(replyToken, nextMode, placekanko) {
 
 
     ]
+
+
     postData = {
       "replyToken": replyToken,
       "messages": kankochi
@@ -483,6 +488,23 @@ function test3() {
       ]
     }
   })
+
+  let kankochi = [
+    {
+      "type": "template",
+      "altText": "this is a carousel template",
+      "template": {
+        "type": "carousel",
+        "columns": columns
+      }
+    }
+
+
+
+
+  ]
+
+  console.log(kankochi)
 
 }
 
