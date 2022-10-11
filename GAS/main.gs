@@ -1,7 +1,7 @@
 function reply(data) {
   let agesnum
   let numbersnum
-  let colorsnum
+  let favoritePlacesnum
 
 
   // POST情報から必要データを抽出;
@@ -10,7 +10,7 @@ function reply(data) {
   let typedata = data.events[0].type;
   let ages = ["young", "middle", "high", "aged"]
   let numbers = ["solo", "duet", "trio", "quintet"]
-  let colors = ["red", "blue", "yellow", "green"]
+  let favoritePlaces = ["food", "museum", "secret", "outdoor"]
 
   let sheet_detail = SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEET_NAME_DETAIL);
   var sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEET_NAME_LOG);
@@ -32,7 +32,7 @@ function reply(data) {
       sheet_data.appendRow([timestampda, useridname, "numbers", numbers.indexOf(postbackdata) + 1])
     }
     else {
-      sheet_data.appendRow([timestampda, useridname, "colors", colors.indexOf(postbackdata) + 1])
+      sheet_data.appendRow([timestampda, useridname, "favoritePlaces", favoritePlaces.indexOf(postbackdata) + 1])
     }
   }
 
@@ -51,7 +51,7 @@ function reply(data) {
       nextMode = "number"
     } else if (numbers.includes(postbackdata)) {
       nextMode = "color"
-    } else if (colors.includes(postbackdata)) {
+    } else if (favoritePlaces.includes(postbackdata)) {
 
       //最終行を取得
       lastdata = sheet_data.getLastRow();
@@ -59,9 +59,9 @@ function reply(data) {
 
       agesnum = sheet_data.getRange(lastdata - 2, 4).getValue();
       numbersnum = sheet_data.getRange(lastdata - 1, 4).getValue();
-      colorsnum = sheet_data.getRange(lastdata, 4).getValue();
+      favoritePlacesnum = sheet_data.getRange(lastdata, 4).getValue();
 
-      placekanko = myFunction(agesnum, numbersnum, colorsnum) //cos類似度
+      placekanko = myFunction(agesnum, numbersnum, favoritePlacesnum) //cos類似度
       //変数(placekanko)に return 値を格納している．
 
 
@@ -280,10 +280,7 @@ function sendMessage(replyToken, nextMode, placekanko) {
 
   ]
 
-
-  //データ変更
-  //外で遊びたい= 緑, グルメ・カフェ= 赤, 博物館・美術館 = 青 , 穴場へ行ってみたい=黄
-  let colorQuestion = [
+  let favoritePlaceQuestion = [
     {
       "type": "flex",
       "altText": "this is a flex message",
@@ -325,7 +322,7 @@ function sendMessage(replyToken, nextMode, placekanko) {
               "action": {
                 "type": "postback",
                 "label": "グルメ・カフェ",
-                "data": "red",
+                "data": "food",
                 "displayText": "グルメ・カフェ"
               }
             },
@@ -336,7 +333,7 @@ function sendMessage(replyToken, nextMode, placekanko) {
               "action": {
                 "type": "postback",
                 "label": "博物館・美術館",
-                "data": "blue",
+                "data": "museum",
                 "displayText": "博物館・美術館"
               }
             },
@@ -351,7 +348,7 @@ function sendMessage(replyToken, nextMode, placekanko) {
               "action": {
                 "type": "postback",
                 "label": "穴場へ行ってみたい",
-                "data": "yellow",
+                "data": "secret",
                 "displayText": "穴場へ行ってみたい"
               }
             },
@@ -360,7 +357,7 @@ function sendMessage(replyToken, nextMode, placekanko) {
               "action": {
                 "type": "postback",
                 "label": "外で遊びたい！",
-                "data": "green",
+                "data": "outdoor",
                 "displayText": "外で遊びたい"
               }
             }
@@ -389,7 +386,7 @@ function sendMessage(replyToken, nextMode, placekanko) {
   } else if (nextMode == "color") {
     postData = {
       "replyToken": replyToken,
-      "messages": colorQuestion
+      "messages": favoritePlaceQuestion
     };
   } else if (nextMode == "ans") {
     let columnsData = placekanko.map((test) => {
@@ -447,67 +444,6 @@ function sendMessage(replyToken, nextMode, placekanko) {
   };
   return UrlFetchApp.fetch(REPLY, options);
 }
-
-function test3() {
-  const testkanko = [{
-    imageurl: "imageurl",
-    land: "land",
-    detail: "detail",
-    id: 1
-  }, {
-    imageurl: "imageurl2",
-    land: "land2",
-    detail: "detail2",
-    id: 2
-  }, {
-    imageurl: "imageurl3",
-    land: "land3",
-    detail: "detail3",
-    id: 3
-  }]
-
-
-  //.mapは関数だから何かを指定しなければならない (何をmapするの？)
-  //新たな引数として(test)を指定 (testをマップするよ)
-  //返り値として{thum.. }のオブジェクトを返している． 
-
-  let columns = testkanko.map((test) => {
-    //3つのオブジェクトを全て呼び出している
-    //なぜ こんな書き方
-    return {
-      "thumbnailImageUrl": test.imageurl,
-      "title": test.land,
-      "text": test.detail,
-      "actions": [
-        {
-          "type": "uri",
-          "label": "詳細",
-          "uri": `https://script.google.com/macros/s/AKfycbxQxSefY4B56n0Hiiy_yJGkY0IgLl_54ATAEIadGA7ucV1lbLq7wGLi37Ho6ZGDgAxapw/exec?id=${test.id}`
-
-        }
-      ]
-    }
-  })
-
-  let kankochi = [
-    {
-      "type": "template",
-      "altText": "this is a carousel template",
-      "template": {
-        "type": "carousel",
-        "columns": columns
-      }
-    }
-
-
-
-
-  ]
-
-  console.log(kankochi)
-
-}
-
 
 
 
