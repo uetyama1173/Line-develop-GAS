@@ -1,15 +1,6 @@
 {
   "timeZone": "Asia/Tokyo",
-  "dependencies": {
-    "libraries": [
-      {
-        "userSymbol": "LINEbotresort",
-        "version": "0",
-        "libraryId": "1yXDCPCffe9OtbPBLxl_XFGX26LHXSXpBo5kK-12Jvd2eEAzUI9D5S6sm",
-        "developmentMode": true
-      }
-    ]
-  },
+  "dependencies": {},
   "exceptionLogging": "STACKDRIVER",
   "runtimeVersion": "V8",
   "webapp": {
