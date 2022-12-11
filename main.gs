@@ -1,7 +1,7 @@
 // 応答メッセージURL
 const REPLY = "https://api.line.me/v2/bot/message/reply";
 
-// アクセストークン
+// LINE アクセストークン
 const ACCESS_TOKEN = "PvIffML2/T1QRBvqQP/idWW7GXQwSuaTOhmJhGPk7/5QW5klaWNBX2vFPD0IwvNVAM+vzMuK+0FXOFzXfqQpjnZi1KorvCCFr0+41HSFdgxmNaz+74M5+VlodgCZke2JlLtE5fTtBP1Q5l5bZtEbVQdB04t89/1O/w1cDnyilFU=";
 
 // スプレッドシート情報
@@ -9,60 +9,75 @@ const SHEET_ID = '1U1TVQ81Ipd7HbA9T4kjiartZF0pxKgFx5D3dfYgXTwk';
 const sheet_data = SpreadsheetApp.openById(SHEET_ID).getSheetByName("DB");
 const sheet_shosai = SpreadsheetApp.openById(SHEET_ID).getSheetByName("shosai");
 const sheet_debug = SpreadsheetApp.openById(SHEET_ID).getSheetByName("debug");
+const sheet_user = SpreadsheetApp.openById(SHEET_ID).getSheetByName("user");
+const sheet_question = SpreadsheetApp.openById(SHEET_ID).getSheetByName("Question_content");
 
+// function test() {
+//   const e = {
+//     postData: { source:{ type:"user", userId:"U1dcd5c5fa46a5164aec2c94f8efb8b36" }, deliveryContext:{ isRedelivery:false}, replyToken:"b761913792f54083a992ecccebcc2246", type:"postback", postback:{ data:active }, mode:"active", webhookEventId:"01GKX17745YSPXH3QMEXD3A6X6", timestamp:1.6706428996E12 }
+//   }
+
+//   doPost(e)
+// }
 
 
 function doPost(e) {
 
   //ラインから受け取った情報を格納している
   let data = JSON.parse(e.postData.contents);
-
-  //obj(data)のデータを取り出しているだけ
   let messageType = data.events[0].type
   let replyToken = data.events[0].replyToken;
   let useridname = data.events[0].source.userId;
-  let timestampda = data.events[0].timestamp;
-
+  
   //chatlog
   sheet_debug.appendRow([data.events[0]]);
+  
 
+  //User判定
+  let UserJudge = userJudge(useridname)
 
-  //メッセージタイプで判定を行う
+  //MessageTypeで判定
   if (messageType == "message") {
-    let textMessage = data.events[0].message.text
     if (data.events[0].message.text == "観光地を探す") {
-      sheet_data.appendRow([timestampda, useridname, textMessage])
-      sendMessage(replyToken)
+      let question_ID = outQuestion_ID(UserJudge,5)
+      sendMessage(replyToken,question_ID)
     }
   }
-  if (messageType == "postback") {
-    if (ssRef(0) == "観光地を探す") {
+  else if (messageType == "postback") {
+    if (ssRef(UserJudge,0) == "") {
       let postbackdata = data.events[0].postback.data;
-      sheet_data.appendRow([timestampda, useridname, postbackdata])
+      //ユーザの回答
+      ssWrite(UserJudge,2,postbackdata)
       sendMessage(replyToken)
-    } else if (ssRef(1) == "観光地を探す") {
+    } 
+    else if (ssRef(UserJudge,1) == "") {
       let postbackdata = data.events[0].postback.data;
-      sheet_data.appendRow([timestampda, useridname, postbackdata])
+      //ユーザの回答
+      ssWrite(UserJudge,3, postbackdata)
       sendMessage(replyToken)
-    } else if (ssRef(2) == "観光地を探す") {
+    } 
+    else if (ssRef(UserJudge,2) == "") {
       let postbackdata = data.events[0].postback.data;
-      sheet_data.appendRow([timestampda, useridname, postbackdata])
+      //ユーザの回答
+      ssWrite(UserJudge,4, postbackdata)
       //最適化された観光地を表示
-      sendKankoMessage(replyToken);
     }
   }
-
+//最適化後　スプレットシートのデータ削除
 }
 
-//択一式の質問を送信
-function sendMessage(replyToken) {
+function sendMessage(replyToken,question_ID) {
 
-  //値を格納　0:Title 1:一つ目の質問　2:2つ目・・・
-  //textarrayに質問文を格納している
-  let textarray = [questionText()]
+  let question_content = sheet_user.getRange(question_ID + 1, 2).getValue()
+  let question_ans_first = sheet_user.getRange(question_ID + 1, 3).getValue()
+  let question_ans_second = sheet_user.getRange(question_ID + 1, 4).getValue()
+  let question_ans_third = sheet_user.getRange(question_ID + 1, 5).getValue()
+  let question_ans_force = sheet_user.getRange(question_ID + 1, 6).getValue()
 
 
-  let seasonQuestion = [
+
+
+  let styleQuestion = [
     {
       "type": "flex",
       "altText": "this is a flex message",
@@ -85,7 +100,7 @@ function sendMessage(replyToken) {
           "contents": [
             {
               "type": "text",
-              "text": textarray[0][0],
+              "text": `${question_content}`,
               "weight": "bold",
               "size": "xl",
               "margin": "none",
@@ -112,9 +127,9 @@ function sendMessage(replyToken) {
               "height": "sm",
               "action": {
                 "type": "postback",
-                "label": textarray[0][1],
+                "label": `${question_ans_first}`,
                 "data": "1",
-                "displayText": textarray[0][1]
+                "displayText": `${question_ans_first}`
               }
             },
             {
@@ -123,9 +138,9 @@ function sendMessage(replyToken) {
               "height": "sm",
               "action": {
                 "type": "postback",
-                "label": textarray[0][2],
+                "label": `${question_ans_second}`,
                 "data": "2",
-                "displayText": textarray[0][2]
+                "displayText": `${question_ans_second}`
               }
             },
             {
@@ -138,18 +153,18 @@ function sendMessage(replyToken) {
               "type": "button",
               "action": {
                 "type": "postback",
-                "label": textarray[0][3],
+                "label": `${question_ans_third}`,
                 "data": "3",
-                "displayText": textarray[0][3]
+                "displayText": `${question_ans_third}`
               }
             },
             {
               "type": "button",
               "action": {
                 "type": "postback",
-                "label": textarray[0][4],
+                "label": `${question_ans_force}`,
                 "data": "4",
-                "displayText": textarray[0][4]
+                "displayText": `${question_ans_force}`
               }
             }
           ],
@@ -163,7 +178,7 @@ function sendMessage(replyToken) {
 
   let postData = {
     "replyToken": replyToken,
-    "messages": seasonQuestion
+    "messages": styleQuestion
   };
 
   // リクエストヘッダ
@@ -181,86 +196,3 @@ function sendMessage(replyToken) {
 
 
 }
-
-//最適化された観光スポットデータを送信
-function sendKankoMessage(replyToken) {
-
-  const kankochi = cosRuiji()
-
-  let touristArea1 = kankochi[0][0]
-  let touristArea2 = kankochi[1][0]
-  let touristArea3 = kankochi[2][0]
-
-
-  let kankochiAnswer = [
-
-    {
-      "type": "template",
-      "altText": "this is a carousel template",
-      "template": {
-        "type": "carousel",
-        "columns": [
-          {
-            "thumbnailImageUrl": touristArea1.imgUrl,
-            "title": touristArea1.land,
-            "text": touristArea1.detailText,
-            "actions": [
-              {
-                "type": "uri",
-                "label": "詳細",
-                "uri": `https://script.google.com/a/macros/style-arts.jp/s/AKfycbzYZ2-Ez4DexD1PDDAM6pDuvPtcbDpPpqOLSL70FUlH-C80FA7p3gf_0v1LeRxxbE4A/exec?id=${touristArea1.id}`
-              }
-            ]
-          },
-          {
-            "thumbnailImageUrl": touristArea2.imgUrl,
-            "title": touristArea2.land,
-            "text": touristArea2.detailText,
-            "actions": [
-              {
-                "type": "uri",
-                "label": "詳細",
-                "uri": `https://script.google.com/a/macros/style-arts.jp/s/AKfycbzYZ2-Ez4DexD1PDDAM6pDuvPtcbDpPpqOLSL70FUlH-C80FA7p3gf_0v1LeRxxbE4A/exec?id=${touristArea2.id}`
-              }
-            ]
-          },
-          {
-            "thumbnailImageUrl": touristArea3.imgUrl,
-            "title": touristArea3.land,
-            "text": touristArea3.detailText,
-            "actions": [
-              {
-                "type": "uri",
-                "label": "詳細",
-                "uri": `https://script.google.com/a/macros/style-arts.jp/s/AKfycbzYZ2-Ez4DexD1PDDAM6pDuvPtcbDpPpqOLSL70FUlH-C80FA7p3gf_0v1LeRxxbE4A/exec?id=${touristArea3.id}`
-              }
-            ]
-          }
-        ]
-      }
-    }
-
-
-  ]
-
-  let postData = {
-    "replyToken": replyToken,
-    "messages": kankochiAnswer
-  };
-
-  // リクエストヘッダ
-  var headers = {
-    "Content-Type": "application/json; charset=UTF-8",
-    "Authorization": "Bearer " + ACCESS_TOKEN
-  };
-  // POSTオプション作成
-  var options = {
-    "method": "POST",
-    "headers": headers,
-    "payload": JSON.stringify(postData)
-  };
-  return UrlFetchApp.fetch(REPLY, options);
-
-}
-
-
