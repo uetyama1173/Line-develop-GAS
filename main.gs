@@ -33,34 +33,48 @@ function doPost(e) {
   sheet_debug.appendRow([data.events[0]]);
   
 
-  //User判定
+  //User判定 行数を返す
   let UserJudge = userJudge(useridname)
 
   //MessageTypeで判定
   if (messageType == "message") {
     if (data.events[0].message.text == "観光地を探す") {
-      let question_ID = outQuestion_ID(UserJudge,5)
+      //質問IDの取得
+      let question_ID = outQuestion_ID(UserJudge,5, 5)
+      //1つ目の質問を送信
       sendMessage(replyToken,question_ID)
     }
   }
   else if (messageType == "postback") {
     if (ssRef(UserJudge,0) == "") {
+      //ポストバックデータ
       let postbackdata = data.events[0].postback.data;
-      //ユーザの回答
+      //質問IDの取得
+      let question_ID = outQuestion_ID(UserJudge,5, 6)
+      //ユーザの回答(param)
       ssWrite(UserJudge,2,postbackdata)
-      sendMessage(replyToken)
+      //2つ目の質問を送信
+      sendMessage(replyToken,question_ID)
     } 
     else if (ssRef(UserJudge,1) == "") {
+      //ポストバックデータ
       let postbackdata = data.events[0].postback.data;
-      //ユーザの回答
-      ssWrite(UserJudge,3, postbackdata)
-      sendMessage(replyToken)
+      //質問IDの取得
+      let question_ID = outQuestion_ID(UserJudge,5, 7)
+      //ユーザの回答(param)
+      ssWrite(UserJudge,3,postbackdata)
+      //3つ目の質問を送信
+      sendMessage(replyToken,question_ID)
     } 
     else if (ssRef(UserJudge,2) == "") {
+      //ポストバックデータ
       let postbackdata = data.events[0].postback.data;
-      //ユーザの回答
-      ssWrite(UserJudge,4, postbackdata)
-      //最適化された観光地を表示
+      //ユーザの回答(param)
+      ssWrite(UserJudge,4,postbackdata)
+      //cos類似計算
+      let best_place = cosRuiji(UserJudge)      
+      //最適な観光スポットの検出 
+      sendKankoMessage(replyToken,best_place)
     }
   }
 //最適化後　スプレットシートのデータ削除
@@ -68,11 +82,11 @@ function doPost(e) {
 
 function sendMessage(replyToken,question_ID) {
 
-  let question_content = sheet_user.getRange(question_ID + 1, 2).getValue()
-  let question_ans_first = sheet_user.getRange(question_ID + 1, 3).getValue()
-  let question_ans_second = sheet_user.getRange(question_ID + 1, 4).getValue()
-  let question_ans_third = sheet_user.getRange(question_ID + 1, 5).getValue()
-  let question_ans_force = sheet_user.getRange(question_ID + 1, 6).getValue()
+  let question_content = sheet_question.getRange(question_ID + 1, 2).getValue()
+  let question_ans_first = sheet_question.getRange(question_ID + 1, 3).getValue()
+  let question_ans_second = sheet_question.getRange(question_ID + 1, 4).getValue()
+  let question_ans_third = sheet_question.getRange(question_ID + 1, 5).getValue()
+  let question_ans_force = sheet_question.getRange(question_ID + 1, 6).getValue()
 
 
 
@@ -194,5 +208,80 @@ function sendMessage(replyToken,question_ID) {
   };
   return UrlFetchApp.fetch(REPLY, options);
 
+
+}
+
+//最適化された観光スポットデータを送信
+function sendKankoMessage(replyToken, best_place) {
+
+
+  let kankochiAnswer = [
+
+    {
+      "type": "template",
+      "altText": "this is a carousel template",
+      "template": {
+        "type": "carousel",
+        "columns": [
+          {
+            "thumbnailImageUrl": best_place[0].imgUrl,
+            "title": best_place[0].land,
+            "text": best_place[0].detailText,
+            "actions": [
+              {
+                "type": "uri",
+                "label": "詳細",
+                "uri": `https://script.google.com/a/macros/style-arts.jp/s/AKfycbzYZ2-Ez4DexD1PDDAM6pDuvPtcbDpPpqOLSL70FUlH-C80FA7p3gf_0v1LeRxxbE4A/exec?id=${best_place[0].id}`
+              }
+            ]
+          },
+          {
+            "thumbnailImageUrl": best_place[1].imgUrl,
+            "title": best_place[1].land,
+            "text": best_place[1].detailText,
+            "actions": [
+              {
+                "type": "uri",
+                "label": "詳細",
+                "uri": `https://script.google.com/a/macros/style-arts.jp/s/AKfycbzYZ2-Ez4DexD1PDDAM6pDuvPtcbDpPpqOLSL70FUlH-C80FA7p3gf_0v1LeRxxbE4A/exec?id=${best_place[1].id}`
+              }
+            ]
+          },
+          {
+            "thumbnailImageUrl": best_place[2].imgUrl,
+            "title": best_place[2].land,
+            "text": best_place[2].detailText,
+            "actions": [
+              {
+                "type": "uri",
+                "label": "詳細",
+                "uri": `https://script.google.com/a/macros/style-arts.jp/s/AKfycbzYZ2-Ez4DexD1PDDAM6pDuvPtcbDpPpqOLSL70FUlH-C80FA7p3gf_0v1LeRxxbE4A/exec?id=${best_place[2].id}`
+              }
+            ]
+          }
+        ]
+      }
+    }
+
+
+  ]
+
+  let postData = {
+    "replyToken": replyToken,
+    "messages": kankochiAnswer
+  };
+
+  // リクエストヘッダ
+  var headers = {
+    "Content-Type": "application/json; charset=UTF-8",
+    "Authorization": "Bearer " + ACCESS_TOKEN
+  };
+  // POSTオプション作成
+  var options = {
+    "method": "POST",
+    "headers": headers,
+    "payload": JSON.stringify(postData)
+  };
+  return UrlFetchApp.fetch(REPLY, options);
 
 }
