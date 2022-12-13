@@ -75,9 +75,10 @@ function doPost(e) {
       let best_place = cosRuiji(UserJudge)      
       //最適な観光スポットの検出 
       sendKankoMessage(replyToken,best_place)
+      //データ削除
+      sheet_user.getRange(UserJudge, 2, 1, 6).clearContent()
     }
   }
-//最適化後　スプレットシートのデータ削除
 }
 
 function sendMessage(replyToken,question_ID) {
@@ -224,38 +225,38 @@ function sendKankoMessage(replyToken, best_place) {
         "type": "carousel",
         "columns": [
           {
-            "thumbnailImageUrl": best_place[0].imgUrl,
-            "title": best_place[0].land,
-            "text": best_place[0].detailText,
+            "thumbnailImageUrl": best_place[0][0].imgUrl,
+            "title": best_place[0][0].land,
+            "text": best_place[0][0].detailText,
             "actions": [
               {
                 "type": "uri",
                 "label": "詳細",
-                "uri": `https://script.google.com/a/macros/style-arts.jp/s/AKfycbzYZ2-Ez4DexD1PDDAM6pDuvPtcbDpPpqOLSL70FUlH-C80FA7p3gf_0v1LeRxxbE4A/exec?id=${best_place[0].id}`
+                "uri": `https://script.google.com/a/macros/style-arts.jp/s/AKfycbzYZ2-Ez4DexD1PDDAM6pDuvPtcbDpPpqOLSL70FUlH-C80FA7p3gf_0v1LeRxxbE4A/exec?id=${best_place[0][0].id}`
               }
             ]
           },
           {
-            "thumbnailImageUrl": best_place[1].imgUrl,
-            "title": best_place[1].land,
-            "text": best_place[1].detailText,
+            "thumbnailImageUrl": best_place[1][0].imgUrl,
+            "title": best_place[1][0].land,
+            "text": best_place[1][0].detailText,
             "actions": [
               {
                 "type": "uri",
                 "label": "詳細",
-                "uri": `https://script.google.com/a/macros/style-arts.jp/s/AKfycbzYZ2-Ez4DexD1PDDAM6pDuvPtcbDpPpqOLSL70FUlH-C80FA7p3gf_0v1LeRxxbE4A/exec?id=${best_place[1].id}`
+                "uri": `https://script.google.com/a/macros/style-arts.jp/s/AKfycbzYZ2-Ez4DexD1PDDAM6pDuvPtcbDpPpqOLSL70FUlH-C80FA7p3gf_0v1LeRxxbE4A/exec?id=${best_place[1][0].id}`
               }
             ]
           },
           {
-            "thumbnailImageUrl": best_place[2].imgUrl,
-            "title": best_place[2].land,
-            "text": best_place[2].detailText,
+            "thumbnailImageUrl": best_place[2][0].imgUrl,
+            "title": best_place[2][0].land,
+            "text": best_place[2][0].detailText,
             "actions": [
               {
                 "type": "uri",
                 "label": "詳細",
-                "uri": `https://script.google.com/a/macros/style-arts.jp/s/AKfycbzYZ2-Ez4DexD1PDDAM6pDuvPtcbDpPpqOLSL70FUlH-C80FA7p3gf_0v1LeRxxbE4A/exec?id=${best_place[2].id}`
+                "uri": `https://script.google.com/a/macros/style-arts.jp/s/AKfycbzYZ2-Ez4DexD1PDDAM6pDuvPtcbDpPpqOLSL70FUlH-C80FA7p3gf_0v1LeRxxbE4A/exec?id=${best_place[2][0].id}`
               }
             ]
           }

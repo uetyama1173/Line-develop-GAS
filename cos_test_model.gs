@@ -1,4 +1,18 @@
-function cosRuiji() {
+function foo() {
+  let best_place = cosRuiji(6)
+  console.log(best_place[1][0].imgUrl)
+
+}
+
+function send(best_place) {
+
+  let hoge = best_place[0].imgUrl
+
+  return hoge
+}
+
+
+function cosRuiji_test() {
 
   //ユーザの質問回答
   let ans_user1 = sheet_user.getRange(6, 2).getValue()

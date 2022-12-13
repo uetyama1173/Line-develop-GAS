@@ -32,7 +32,7 @@ function userJudge(useridname) {
 
 
 /**
- * ユーザに対応する質問列を判定する関数
+ * ユーザの回答を判定する関数
  * @param {number}userNum - 行
  * @param {number}num - 列
  * @return {number}refUser -　参照した値(質問の回答)

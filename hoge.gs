@@ -1,3 +1,7 @@
+function clear(){
+  sheet_user.getRange(6, 2, 1, 6).clearContent()
+}
+
 function indexOf() {
 
   let useridname = "U1dcd5c5fa46a5164aec2c94f8efb8b36"
