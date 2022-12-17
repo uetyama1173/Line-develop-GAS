@@ -18,9 +18,7 @@ const sheet_question = SpreadsheetApp.openById(SHEET_ID).getSheetByName("Questio
 //   }
 
 //   doPost(e)
-// }
-
-
+//}
 function doPost(e) {
 
   //ラインから受け取った情報を格納している
@@ -28,10 +26,10 @@ function doPost(e) {
   let messageType = data.events[0].type
   let replyToken = data.events[0].replyToken;
   let useridname = data.events[0].source.userId;
-  
+
   //chatlog
   sheet_debug.appendRow([data.events[0]]);
-  
+
 
   //User判定 行数を返す
   let UserJudge = userJudge(useridname)
@@ -40,54 +38,58 @@ function doPost(e) {
   if (messageType == "message") {
     if (data.events[0].message.text == "観光地を探す") {
       //質問IDの取得
-      let question_ID = outQuestion_ID(UserJudge,5, 5)
+      let question_ID = outQuestion_ID(UserJudge, 5, 5)
       //1つ目の質問を送信
-      sendMessage(replyToken,question_ID)
+      sendMessage(replyToken, question_ID)
     }
   }
   else if (messageType == "postback") {
-    if (ssRef(UserJudge,0) == "") {
+    if (ssRef(UserJudge, 0) == "") {
       //ポストバックデータ
       let postbackdata = data.events[0].postback.data;
       //質問IDの取得
-      let question_ID = outQuestion_ID(UserJudge,5, 6)
+      let question_ID = outQuestion_ID(UserJudge, 5, 6)
       //ユーザの回答(param)
-      ssWrite(UserJudge,2,postbackdata)
+      ssWrite(UserJudge, 2, postbackdata)
       //2つ目の質問を送信
-      sendMessage(replyToken,question_ID)
-    } 
-    else if (ssRef(UserJudge,1) == "") {
+      sendMessage(replyToken, question_ID)
+    }
+    else if (ssRef(UserJudge, 1) == "") {
       //ポストバックデータ
       let postbackdata = data.events[0].postback.data;
       //質問IDの取得
-      let question_ID = outQuestion_ID(UserJudge,5, 7)
+      let question_ID = outQuestion_ID(UserJudge, 5, 7)
       //ユーザの回答(param)
-      ssWrite(UserJudge,3,postbackdata)
+      ssWrite(UserJudge, 3, postbackdata)
       //3つ目の質問を送信
-      sendMessage(replyToken,question_ID)
-    } 
-    else if (ssRef(UserJudge,2) == "") {
+      sendMessage(replyToken, question_ID)
+    }
+    else if (ssRef(UserJudge, 2) == "") {
       //ポストバックデータ
       let postbackdata = data.events[0].postback.data;
       //ユーザの回答(param)
-      ssWrite(UserJudge,4,postbackdata)
+      ssWrite(UserJudge, 4, postbackdata)
       //cos類似計算
-      let best_place = cosRuiji(UserJudge)      
-      //最適な観光スポットの検出 
-      sendKankoMessage(replyToken,best_place)
+      let best_place = cosRuiji(UserJudge)
+
       //データ削除
       sheet_user.getRange(UserJudge, 2, 1, 6).clearContent()
+      //最適な観光スポットの検出 
+      sendKankoMessage(replyToken, best_place)
+
     }
   }
 }
 
-function sendMessage(replyToken,question_ID) {
+function sendMessage(replyToken, question_ID) {
+
 
   let question_content = sheet_question.getRange(question_ID + 1, 2).getValue()
   let question_ans_first = sheet_question.getRange(question_ID + 1, 3).getValue()
   let question_ans_second = sheet_question.getRange(question_ID + 1, 4).getValue()
   let question_ans_third = sheet_question.getRange(question_ID + 1, 5).getValue()
   let question_ans_force = sheet_question.getRange(question_ID + 1, 6).getValue()
+  let question_ans_img_url = sheet_question.getRange(question_ID + 1, 7).getValue()
 
 
 
@@ -100,7 +102,7 @@ function sendMessage(replyToken,question_ID) {
         "type": "bubble",
         "hero": {
           "type": "image",
-          "url": "https://uetyama1173.github.io/Line-develop-GAS/img/age2.jpg",
+          "url": `${question_ans_img_url}`,
           "size": "full",
           "aspectRatio": "20:13",
           "aspectMode": "cover",
@@ -215,7 +217,6 @@ function sendMessage(replyToken,question_ID) {
 //最適化された観光スポットデータを送信
 function sendKankoMessage(replyToken, best_place) {
 
-
   let kankochiAnswer = [
 
     {
@@ -225,38 +226,38 @@ function sendKankoMessage(replyToken, best_place) {
         "type": "carousel",
         "columns": [
           {
-            "thumbnailImageUrl": best_place[0][0].imgUrl,
-            "title": best_place[0][0].land,
+            "thumbnailImageUrl": best_place[0][0].img_url,
+            "title": best_place[0][0].land_name,
             "text": best_place[0][0].detailText,
             "actions": [
               {
                 "type": "uri",
                 "label": "詳細",
-                "uri": `https://script.google.com/a/macros/style-arts.jp/s/AKfycbzYZ2-Ez4DexD1PDDAM6pDuvPtcbDpPpqOLSL70FUlH-C80FA7p3gf_0v1LeRxxbE4A/exec?id=${best_place[0][0].id}`
+                "uri": `https://uetyama1173.github.io/test_resorTech_HTML/index_template.html?img_url=${best_place[0][0].img_url}&land_name=${best_place[0][0].land_name_encode}&address=${best_place[0][0].address_encode}&closed_day=${best_place[0][0].closed_day_encode}&officiallink=${best_place[0][0].officiallink}&businessday=${best_place[0][0].businessday_encode}`
               }
             ]
           },
           {
-            "thumbnailImageUrl": best_place[1][0].imgUrl,
-            "title": best_place[1][0].land,
+            "thumbnailImageUrl": best_place[1][0].img_url,
+            "title": best_place[1][0].land_name,
             "text": best_place[1][0].detailText,
             "actions": [
               {
                 "type": "uri",
                 "label": "詳細",
-                "uri": `https://script.google.com/a/macros/style-arts.jp/s/AKfycbzYZ2-Ez4DexD1PDDAM6pDuvPtcbDpPpqOLSL70FUlH-C80FA7p3gf_0v1LeRxxbE4A/exec?id=${best_place[1][0].id}`
+                "uri": `https://uetyama1173.github.io/test_resorTech_HTML/index_template.html?img_url=${best_place[1][0].img_url}&land_name=${best_place[1][0].land_name_encode}&address=${best_place[1][0].address_encode}&closed_day=${best_place[1][0].closed_day_encode}&officiallink=${best_place[1][0].officiallink}&businessday=${best_place[1][0].businessday_encode}`
               }
             ]
           },
           {
-            "thumbnailImageUrl": best_place[2][0].imgUrl,
-            "title": best_place[2][0].land,
+            "thumbnailImageUrl": best_place[2][0].img_url,
+            "title": best_place[2][0].land_name,
             "text": best_place[2][0].detailText,
             "actions": [
               {
                 "type": "uri",
                 "label": "詳細",
-                "uri": `https://script.google.com/a/macros/style-arts.jp/s/AKfycbzYZ2-Ez4DexD1PDDAM6pDuvPtcbDpPpqOLSL70FUlH-C80FA7p3gf_0v1LeRxxbE4A/exec?id=${best_place[2][0].id}`
+                "uri": `https://uetyama1173.github.io/test_resorTech_HTML/index_template.html?img_url=${best_place[2][0].img_url}&land_name=${best_place[2][0].land_name_encode}&address=${best_place[2][0].address_encode}&closed_day=${best_place[2][0].closed_day_encode}&officiallink=${best_place[2][0].officiallink}&businessday=${best_place[2][0].businessday_encode}`
               }
             ]
           }
@@ -286,3 +287,4 @@ function sendKankoMessage(replyToken, best_place) {
   return UrlFetchApp.fetch(REPLY, options);
 
 }
+

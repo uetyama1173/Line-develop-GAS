@@ -1,5 +1,5 @@
 /**
- * 質問IDの取得とuserシートに書き込みを行う関数
+ * 質問objの取得とuserシートに書き込みを行う関数
  * @param {number}usernum - LINEから送信されたユーザーID情報
  * @paream{number}row - ユーザーの質問IDが含まれる列
  * @paream{number}q2_row - ユーザーの質問IDが含まれる列
@@ -25,7 +25,7 @@ function outQuestion_ID(usernum, row, q2_row) {
   }
 
   //userシートに書き込み 
-  sheet_user.getRange(usernum,q2_row).setValue(question_ID)
+  sheet_user.getRange(usernum, q2_row).setValue(question_ID)
 
 
   //質問文をセット
@@ -41,12 +41,6 @@ function outQuestion_ID(usernum, row, q2_row) {
 
 
 }
-
-function write_questionID(){
-
-}
-
-
 
 
 
@@ -77,16 +71,32 @@ function cosRuiji(usernum) {
 
     //SSから観光地情報を取得
     let id = sheet_shosai.getRange(i, 1).getValue()
-    let land = sheet_shosai.getRange(i, 2).getValue()
+    let land_name = sheet_shosai.getRange(i, 2).getValue()
     let imgUrl = sheet_shosai.getRange(i, 4).getValue()
     let detailText = sheet_shosai.getRange(i, 3).getValue()
     let address = sheet_shosai.getRange(i, 5).getValue()
+    let businessday = sheet_shosai.getRange(i, 7).getValue()
+    let land_outline = sheet_shosai.getRange(i, 6).getValue()
+    let closed_day = sheet_shosai.getRange(i, 8).getValue()
+    let officiallink = sheet_shosai.getRange(i, 9).getValue()
+
+    //詳細ページで用いる(エンコード処理)
+    let land_name_encode = encodeURI(land_name)
+    let land_outline_encode = encodeURI(land_outline)
+    let address_encode = encodeURI(address)
+    let closed_day_encode = encodeURI(closed_day)
+    let businessday_encode = encodeURI(businessday)
+
+
+
+
 
 
     //cos類似度計算
     const bunshi = (ans1 * ans_user1 + ans2 * ans_user2 + ans3 * ans_user3)
     const bunbo = Math.sqrt((ans1 ** 2 + ans2 ** 2 + ans3 ** 2) * (ans_user1 ** 2 + ans_user2 ** 2 + ans_user3 ** 2))
-    cosRuiji = [{ id: id, land: land, imgUrl: imgUrl, detailText: detailText, address: address, ruijido: bunshi / bunbo }]
+    cosRuiji = [{ id: id, land_name: land_name, img_url: imgUrl, detailText: detailText, address: address, ruijido: bunshi / bunbo, land_name_encode: land_name_encode,land_outline_encode: land_outline_encode, businessday_encode: businessday_encode, closed_day_encode: closed_day_encode, address_encode: address_encode, officiallink: officiallink }]
+
 
     // 配列を追加している
     list.push(cosRuiji)
@@ -106,7 +116,7 @@ function cosRuiji(usernum) {
 
   //最適化された観光地の空配列を生成する
   let bestland = [max1, max2, max3]
-  
+
   return bestland
 
 }
